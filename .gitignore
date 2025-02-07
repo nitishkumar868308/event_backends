@@ -1,0 +1,7 @@
+# Node.js
+node_modules/
+
+# Other common files to ignore
+.env
+.DS_Store
+*.log
