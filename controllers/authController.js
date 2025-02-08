@@ -95,7 +95,7 @@ const loginUser = async (req, res) => {
 
     // Save the token in cookies
     res.cookie("token", token, {
-      httpOnly: true,  // Ensures the cookie is not accessible via JavaScript
+      httpOnly: true,  
       secure: process.env.NODE_ENV === "production",
       sameSite: "None", 
     });
