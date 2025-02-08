@@ -50,8 +50,7 @@ const registerUser = async (req, res) => {
     // Save the token in a cookie
     res.cookie("token", token, {
       httpOnly: true,  // Ensures the cookie is not accessible via JavaScript
-      secure: process.env.NODE_ENV === "production", 
-      domain: ".vercel.app",
+      secure: process.env.NODE_ENV === "production", sameSite: "None", 
     });
 
     // Respond with the saved user's data (except the password)
@@ -98,7 +97,7 @@ const loginUser = async (req, res) => {
     res.cookie("token", token, {
       httpOnly: true,  // Ensures the cookie is not accessible via JavaScript
       secure: process.env.NODE_ENV === "production",
-      domain: ".vercel.app",
+      sameSite: "None", 
     });
 
     res.status(200).json({
