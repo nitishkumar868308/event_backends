@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 // Register User
 const registerUser = async (req, res) => {
   const { name, email, password } = req.body;
-  console.log(name , email, password)
+  console.log(name, email, password);
 
   try {
     // Validate the input fields
@@ -21,7 +21,9 @@ const registerUser = async (req, res) => {
 
     // Password strength validation
     if (password.length < 6) {
-      return res.status(400).json({ message: "Password must be at least 6 characters long" });
+      return res
+        .status(400)
+        .json({ message: "Password must be at least 6 characters long" });
     }
 
     // Check if user already exists
@@ -49,9 +51,9 @@ const registerUser = async (req, res) => {
 
     // Save the token in a cookie
     res.cookie("token", token, {
-      httpOnly: true,  // Ensures the cookie is not accessible via JavaScript
-      secure: process.env.NODE_ENV === "production", 
-      sameSite: "none", 
+      httpOnly: true, // Ensures the cookie is not accessible via JavaScript
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "none",
       maxAge: 24 * 60 * 60 * 1000,
     });
 
@@ -67,7 +69,6 @@ const registerUser = async (req, res) => {
   }
 };
 
-
 // Login User
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
@@ -75,7 +76,9 @@ const loginUser = async (req, res) => {
   try {
     // Validation: Check if email and password are provided
     if (!email.trim() || !password.trim()) {
-      return res.status(400).json({ message: "Email and password are required" });
+      return res
+        .status(400)
+        .json({ message: "Email and password are required" });
     }
 
     // Check if the user exists
@@ -91,15 +94,19 @@ const loginUser = async (req, res) => {
     }
 
     // Generate JWT token
-    const token = jwt.sign({ id: user._id, name: user.name, email: user.email }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
-    });
+    const token = jwt.sign(
+      { id: user._id, name: user.name, email: user.email },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "1h",
+      }
+    );
 
     // Save the token in cookies
     res.cookie("token", token, {
-      httpOnly: true,  
+      httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "None", 
+      sameSite: "None",
       maxAge: 24 * 60 * 60 * 1000,
     });
 
@@ -124,18 +131,18 @@ const getUserData = (req, res) => {
 
 const logoutUser = (req, res) => {
   res.clearCookie("token", {
-    httpOnly: true, 
-    secure: process.env.NODE_ENV === "production", 
-    maxAge: 0,  
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "None",
+    maxAge: 24 * 60 * 60 * 1000,
   });
 
   res.status(200).json({ message: "Logged out successfully" });
 };
 
-
 module.exports = {
   registerUser,
   loginUser,
   getUserData,
-  logoutUser
+  logoutUser,
 };
