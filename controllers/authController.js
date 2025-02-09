@@ -129,7 +129,14 @@ const getUserData = (req, res) => {
   });
 };
 
+const blacklist = new Set(); // This can be a DB or Redis in a real-world app
+
 const logoutUser = (req, res) => {
+  const token = req.cookies.token; // Get token from cookie
+
+  // Add token to blacklist
+  blacklist.add(token);
+
   res.clearCookie("token", {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
@@ -139,6 +146,7 @@ const logoutUser = (req, res) => {
 
   res.status(200).json({ message: "Logged out successfully" });
 };
+
 
 module.exports = {
   registerUser,
