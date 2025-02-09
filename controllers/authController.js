@@ -50,7 +50,9 @@ const registerUser = async (req, res) => {
     // Save the token in a cookie
     res.cookie("token", token, {
       httpOnly: true,  // Ensures the cookie is not accessible via JavaScript
-      secure: process.env.NODE_ENV === "production", sameSite: "None", 
+      secure: process.env.NODE_ENV === "production", 
+      sameSite: "none", 
+      maxAge: 24 * 60 * 60 * 1000,
     });
 
     // Respond with the saved user's data (except the password)
@@ -98,6 +100,7 @@ const loginUser = async (req, res) => {
       httpOnly: true,  
       secure: process.env.NODE_ENV === "production",
       sameSite: "None", 
+      maxAge: 24 * 60 * 60 * 1000,
     });
 
     res.status(200).json({
